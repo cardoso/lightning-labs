@@ -1,3 +1,4 @@
+
 // Copyright (c) 2019, Mapbox
 // Borrowed with attribution from: https://github.com/mapbox/pixelmatch/
 
@@ -11,6 +12,7 @@ const defaultOptions = {
   diffMask: false, // draw the diff over a transparent background (a mask)
 };
 
+// @ts-expect-error
 export default function pixelmatch(img1, img2, output, width, height, options) {
   if (!isPixelData(img1) || !isPixelData(img2) || (output && !isPixelData(output)))
     throw new Error('Image data: Uint8Array, Uint8ClampedArray or Buffer expected.');
@@ -67,10 +69,12 @@ export default function pixelmatch(img1, img2, output, width, height, options) {
         ) {
           // one of the pixels is anti-aliasing; draw as yellow and do not count as difference
           // note that we do not include such pixels in a mask
+          // @ts-expect-error
           if (output && !options.diffMask) drawPixel(output, pos, ...options.aaColor);
         } else {
           // found substantial difference not caused by anti-aliasing; draw it as such
           if (output) {
+            // @ts-expect-error
             drawPixel(output, pos, ...((delta < 0 && options.diffColorAlt) || options.diffColor));
           }
           diff++;
@@ -85,15 +89,16 @@ export default function pixelmatch(img1, img2, output, width, height, options) {
   // return the number of different pixels
   return diff;
 }
-
+// @ts-expect-error
 function isPixelData(arr) {
   // work around instanceof Uint8Array not working properly in some Jest environments
+  // @ts-expect-error
   return ArrayBuffer.isView(arr) && arr.constructor.BYTES_PER_ELEMENT === 1;
 }
 
 // check if a pixel is likely a part of anti-aliasing;
 // based on "Anti-aliased Pixel and Intensity Slope Detector" paper by V. Vysniauskas, 2009
-
+// @ts-expect-error
 function antialiased(img, x1, y1, width, height, img2) {
   const x0 = Math.max(x1 - 1, 0);
   const y0 = Math.max(y1 - 1, 0);
@@ -151,6 +156,7 @@ function antialiased(img, x1, y1, width, height, img2) {
 }
 
 // check if a pixel has 3+ adjacent pixels of the same color.
+// @ts-expect-error
 function hasManySiblings(img, x1, y1, width, height) {
   const x0 = Math.max(x1 - 1, 0);
   const y0 = Math.max(y1 - 1, 0);
@@ -182,8 +188,8 @@ function hasManySiblings(img, x1, y1, width, height) {
 
 // calculate color difference according to the paper "Measuring perceived color difference
 // using YIQ NTSC transmission color space in mobile applications" by Y. Kotsarenko and F. Ramos
-
-function colorDelta(img1, img2, k, m, yOnly) {
+// @ts-expect-error
+function colorDelta(img1, img2, k, m, yOnly?) {
   let r1 = img1[k + 0];
   let g1 = img1[k + 1];
   let b1 = img1[k + 2];
@@ -224,29 +230,33 @@ function colorDelta(img1, img2, k, m, yOnly) {
   // encode whether the pixel lightens or darkens in the sign
   return y1 > y2 ? -delta : delta;
 }
-
+// @ts-expect-error
 function rgb2y(r, g, b) {
   return r * 0.29889531 + g * 0.58662247 + b * 0.11448223;
 }
+// @ts-expect-error
 function rgb2i(r, g, b) {
   return r * 0.59597799 - g * 0.2741761 - b * 0.32180189;
 }
+// @ts-expect-error
 function rgb2q(r, g, b) {
   return r * 0.21147017 - g * 0.52261711 + b * 0.31114694;
 }
 
 // blend semi-transparent color with white
+// @ts-expect-error
 function blend(c, a) {
   return 255 + (c - 255) * a;
 }
 
+// @ts-expect-error
 function drawPixel(output, pos, r, g, b) {
   output[pos + 0] = r;
   output[pos + 1] = g;
   output[pos + 2] = b;
   output[pos + 3] = 255;
 }
-
+// @ts-expect-error
 function drawGrayPixel(img, i, alpha, output) {
   const r = img[i + 0];
   const g = img[i + 1];

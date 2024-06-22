@@ -12,24 +12,30 @@
     "//": "This is not yet enabled in CI.",
     "release": "semantic-release",
     "test": "npm run test --workspace example",
-    "test:all": "npm run check && npm run test"
+    "test:all": "npm run check && npm run test",
+    "clean": "rm -rf node_modules && npm run clean --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present"
   },
   "author": "",
   "license": "MIT",
   "workspaces": [
     "example",
-    "packages/@lwc/test-runner",
     "packages/@lwc/wds-core",
+    "packages/@lwc/test-runner",
     "packages/@lwc/wds-playground"
   ],
   "devDependencies": {
     "@biomejs/biome": "1.6.1",
     "@commitlint/cli": "^19.2.2",
     "@commitlint/config-conventional": "^19.2.2",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@semantic-release/npm": "^12.0.0",
+    "@types/node": "^20.14.8",
     "husky": "^9.0.11",
+    "rollup": "^4.18.0",
     "semantic-release": "^23.0.8",
-    "semantic-release-monorepo": "^8.0.2"
+    "semantic-release-monorepo": "^8.0.2",
+    "typescript": "^5.5.2"
   },
   "optionalDependencies": {
     "@biomejs/cli-linux-x64": "1.7.1"

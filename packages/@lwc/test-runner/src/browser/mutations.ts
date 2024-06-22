@@ -5,7 +5,7 @@ import { getElementName, helpers } from '@lwc/wds-core/browser';
 
 const { hydrateElement, insertMarkupIntoDom, renderToMarkup } = helpers;
 
-function setupMutationObserverOnAllElements(doc) {
+function setupMutationObserverOnAllElements(doc: Document | HTMLElement) {
   const observedMutations = new Map();
   const config = {
     attributes: true,
@@ -14,16 +14,16 @@ function setupMutationObserverOnAllElements(doc) {
   };
   let allElements = collectAllElementsDeep('body *', doc);
 
-  const mutationCallback = (mutationList) => {
+  const mutationCallback: MutationCallback = (mutationList) => {
     for (const mutation of mutationList) {
-      const record = {
+      const record: Record<string, any> = {
         type: mutation.type,
       };
 
       if (mutation.addedNodes.length > 0) {
         record.addedNodes = [];
         for (const addedNode of mutation.addedNodes) {
-          if (addedNode.outerHTML) {
+          if ("outerHTML" in addedNode && addedNode.outerHTML) {
             record.addedNodes.push(addedNode.outerHTML);
           } else {
             record.addedNodes.push(addedNode.textContent);
@@ -34,7 +34,7 @@ function setupMutationObserverOnAllElements(doc) {
       if (mutation.removedNodes.length > 0) {
         record.removedNodes = [];
         for (const removedNode of mutation.removedNodes) {
-          if (removedNode.outerHTML) {
+          if ("outerHTML" in removedNode && removedNode.outerHTML) {
             record.removedNodes.push(removedNode.outerHTML);
           } else {
             record.removedNodes.push(removedNode.textContent);
@@ -60,11 +60,14 @@ function setupMutationObserverOnAllElements(doc) {
   while (allElements.length > 0) {
     const element = allElements.shift();
 
-    if (element.shadowRoot) {
-      const allElementsInsideShadowRoot = collectAllElementsDeep('*', element.shadowRoot);
+    if (element instanceof Node && element.shadowRoot) {
+      const allElementsInsideShadowRoot = collectAllElementsDeep('*' as any, element.shadowRoot as any);
       allElements = allElements.concat(allElementsInsideShadowRoot);
     }
 
+    if (!element) {
+      continue;
+    }
     mutationObserver.observe(element, config);
   }
 
@@ -77,7 +80,7 @@ function setupMutationObserverOnAllElements(doc) {
 }
 
 chai.use((_chai, utils) => {
-  utils.addMethod(chai.Assertion.prototype, 'notMakeDomMutationsDuringSSR', async function () {
+  utils.addMethod(chai.Assertion.prototype, 'notMakeDomMutationsDuringSSR', async function (this: object) {
     const componentPath = utils.flag(this, 'object');
     const props = utils.flag(this, 'message');
 

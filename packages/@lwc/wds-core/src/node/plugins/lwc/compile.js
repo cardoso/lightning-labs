@@ -136,7 +136,7 @@ export default ({ rootDir, moduleDirs }) => ({
       // TODO: handle scopedStyles
       scopedStyles: false,
       // Enable template expression in playground UI but not elsewhere.
-      experimentalComplexExpressions: filePath.includes('wds-playground/src/browser/ui/pg/'),
+      experimentalComplexExpressions: filePath.includes('wds-playground/dist/browser/ui/pg/'),
     };
 
     const { code, warnings: diagnostics } = transformSync(context.body, filename, transformOptions);

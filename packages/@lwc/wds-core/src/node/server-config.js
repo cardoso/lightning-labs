@@ -2,7 +2,7 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { hmrPlugin } from '@web/dev-server-hmr';
-import resolveSync from 'resolve/sync.js';
+import resolve from 'resolve';
 
 import { cwd, getLwcConfig, getRootDir } from './util.js';
 
@@ -35,7 +35,7 @@ function getModuleDirs(lwcConfig, manuallyAddedDirs) {
     }
     if (npm) {
       return (
-        path.dirname(resolveSync(`${npm}${path.sep}package.json`, { basedir: cwd })) + path.sep
+        path.dirname(resolve.sync(`${npm}${path.sep}package.json`, { basedir: cwd })) + path.sep
       );
     }
     if (name && modulePath) {

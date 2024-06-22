@@ -1,11 +1,11 @@
-export function getPixelData(imageUrl) {
+export function getPixelData(imageUrl: string): Promise<{ width: number; height: number; imageData: Uint8ClampedArray }>{
   const img = new Image();
   img.src = '';
 
   return new Promise((resolve) => {
     img.onload = () => {
       const canvas = new OffscreenCanvas(img.width, img.height);
-      const canvasCxt = canvas.getContext('2d');
+      const canvasCxt = canvas.getContext('2d')!;
       canvasCxt.drawImage(img, 0, 0);
       resolve({
         width: img.width,

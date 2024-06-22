@@ -1,6 +1,6 @@
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import resolveSync from 'resolve/sync.js';
+import resolve from 'resolve';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -9,7 +9,7 @@ export default ({ rootDir, locale }) => ({
   resolveImport({ source }) {
     if (source.startsWith('@salesforce/i18n/')) {
       try {
-        const moduleAbsPath = resolveSync(
+        const moduleAbsPath = resolve.sync(
           path.join('@salesforce/i18n/dist', locale, source.slice(17)),
           { basedir: __dirname },
         );
@@ -18,7 +18,7 @@ export default ({ rootDir, locale }) => ({
         // Why the try/finally here? It turns out that the `@salesforce/i18n`
         // reference implementation is incomplete and does not include everything
         // that is present when imported on the Salesforce platform. Consequently,
-        // We can't assume that the above `resolveSync` will actually succeed.
+        // We can't assume that the above `resolve.sync` will actually succeed.
         //
         // Therefore we need to return undefined from this function.
       }

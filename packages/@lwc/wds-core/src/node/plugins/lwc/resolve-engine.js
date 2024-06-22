@@ -1,6 +1,6 @@
 import { relative as pathRelative } from 'node:path';
 
-import resolveSync from 'resolve/sync.js';
+import resolve from 'resolve';
 
 import { toolkitSrcPath } from '../../util.js';
 
@@ -96,10 +96,10 @@ export {
 `;
 
 export default ({ rootDir }) => {
-  const engineServerAbsPath = resolveSync('@lwc/engine-server/dist/index.js', {
+  const engineServerAbsPath = resolve.sync('@lwc/engine-server/dist/index.js', {
     basedir: toolkitSrcPath,
   });
-  const engineDomAbsPath = resolveSync('@lwc/engine-dom/dist/index.js', {
+  const engineDomAbsPath = resolve.sync('@lwc/engine-dom/dist/index.js', {
     basedir: toolkitSrcPath,
   });
   const engineServerUrl = `/${pathRelative(rootDir, engineServerAbsPath)}`;

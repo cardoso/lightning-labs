@@ -14,7 +14,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const cwd = process.cwd();
 const COMPONENT_SPECIFIER = /^[a-zA-Z0-9_]+[\/-][a-zA-Z0-9][a-zA-Z0-9_-]+$/;
 
-async function getComponentMetadata(componentSpecifier) {
+async function getComponentMetadata(componentSpecifier: string) {
   const [namespace, name] = componentSpecifier.split('/');
   const { entry: componentAbsPath } = resolveToAbsPath(
     componentSpecifier,
@@ -39,7 +39,7 @@ async function getComponentMetadata(componentSpecifier) {
   return metadata.files[0];
 }
 
-async function launchBrowser({ port, devtools }) {
+async function launchBrowser({ port, devtools }: any) {
   const executablePath = Launcher.getFirstInstallation();
   if (!executablePath) {
     throw new Error('Could not find local installation of Chrome.');
@@ -85,7 +85,7 @@ export async function main() {
     .replaceAll(/-./g, ([_dash, nextChar]) => nextChar.toUpperCase());
   const componentMetadata = await getComponentMetadata(componentSpecifier);
 
-  let handles = {
+  let handles: any = {
     browser: null,
     page: null,
   };
@@ -96,7 +96,7 @@ export async function main() {
     ...[modulesDir].flat(),
   ].filter(Boolean);
 
-  const getUniquePlugins = ({ rootDir }) => [
+  const getUniquePlugins = ({ rootDir }: any) => [
     getIndexHtmlPlugin(componentSpecifier, componentMetadata, rootDir),
   ];
 

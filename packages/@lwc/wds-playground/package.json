@@ -8,8 +8,10 @@
     "directory": "packages/@lwc/wds-playground"
   },
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "clean": "rm -rf dist && rm -rf node_modules",
+    "build": "rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",

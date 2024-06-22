@@ -4,7 +4,7 @@ import { getPixelData, helpers, pixelmatch, captureElement } from '@lwc/wds-core
 const { clientSideRender, hydrateElement, insertMarkupIntoDom, renderToMarkup } = helpers;
 
 chai.use((_chai, utils) => {
-  utils.addMethod(chai.Assertion.prototype, 'visuallyIdenticalInCSRandSSR', async function () {
+  utils.addMethod(chai.Assertion.prototype, 'visuallyIdenticalInCSRandSSR', async function (this: object) {
     const componentPath = utils.flag(this, 'object');
     const props = utils.flag(this, 'message');
 

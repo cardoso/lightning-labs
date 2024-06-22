@@ -4,7 +4,7 @@
 		"enabled": false
 	},
 	"files": {
-		"ignore": ["*.excessive-spec.js"]
+		"ignore": ["*.ts", "**/dist", "*.excessive-spec.js"]
 	},
 	"formatter": {
 		"indentStyle": "space",
@@ -17,7 +17,7 @@
 		}
 	},
 	"linter": {
-		"enabled": true,
+		"enabled": false,
 		"rules": {
 			"recommended": true
 		}

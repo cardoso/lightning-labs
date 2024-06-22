@@ -1,5 +1,9 @@
 class TestWireAdapterTemplate {
-  static emit(value, filterFn) {
+  static _wireInstances: Set<TestWireAdapterTemplate>;
+  static _lastConfig: any;
+  config: {};
+  _dataCallback: any;
+  static emit(value: any, filterFn?: any) {
     let instances = Array.from(TestWireAdapterTemplate._wireInstances);
     if (typeof filterFn === 'function') {
       instances = instances.filter((instance) => filterFn(instance.getConfig()));
@@ -13,13 +17,13 @@ class TestWireAdapterTemplate {
     return TestWireAdapterTemplate._lastConfig;
   }
 
-  constructor(dataCallback) {
+  constructor(dataCallback: any) {
     this.config = {};
     this._dataCallback = dataCallback;
     TestWireAdapterTemplate._wireInstances.add(this);
   }
 
-  update(config) {
+  update(config: any) {
     this.config = config;
     TestWireAdapterTemplate._lastConfig = config;
   }
@@ -33,7 +37,7 @@ class TestWireAdapterTemplate {
     TestWireAdapterTemplate._wireInstances.delete(this);
   }
 
-  emit(value) {
+  emit(value: { data: undefined; error: undefined; }) {
     this._dataCallback(value);
   }
 
@@ -46,9 +50,9 @@ TestWireAdapterTemplate._lastConfig = null;
 TestWireAdapterTemplate._wireInstances = new Set();
 
 function buildTestWireAdapter() {
-  let initialValue = undefined;
+  let initialValue: any = undefined;
   const _a = class TestWireAdapter extends TestWireAdapterTemplate {
-    static emit(value, filterFn) {
+    static emit(value: any, filterFn: any) {
       initialValue = value;
       return TestWireAdapterTemplate.emit(initialValue);
     }
@@ -62,7 +66,7 @@ function buildTestWireAdapter() {
   return _a;
 }
 
-function buildErrorObject$1({ body, status, statusText }) {
+function buildErrorObject$1({ body, status, statusText }:any) {
   if (status && (status < 400 || status > 599)) {
     throw new Error("'status' must be >= 400 or <= 599");
   }
@@ -80,21 +84,21 @@ function buildErrorObject$1({ body, status, statusText }) {
 }
 
 class ApexTestWireAdapterTemplate extends TestWireAdapterTemplate {
-  static emit(value, filterFn) {
+  static emit(value: any, filterFn: any) {
     TestWireAdapterTemplate.emit({ data: value, error: undefined }, filterFn);
   }
 
-  static emitError(errorOptions, filterFn) {
+  static emitError(errorOptions: any, filterFn: any) {
     const err = buildErrorObject$1(errorOptions || {});
     TestWireAdapterTemplate.emit({ data: undefined, error: err }, filterFn);
   }
 
-  static error(body, status, statusText) {
+  static error(body: any, status: any, statusText: any) {
     const err = buildErrorObject$1({ body, status, statusText });
     TestWireAdapterTemplate.emit({ data: undefined, error: err });
   }
 
-  constructor(dataCallback) {
+  constructor(dataCallback: any) {
     super(dataCallback);
     this.emit({ data: undefined, error: undefined });
   }
@@ -107,7 +111,7 @@ function buildApexTestWireAdapter() {
   return _a;
 }
 
-function buildErrorObject({ body, status, statusText }) {
+function buildErrorObject({ body, status, statusText }:any) {
   if (status && (status < 400 || status > 599)) {
     throw new Error("'status' must be >= 400 or <= 599");
   }
@@ -128,28 +132,30 @@ function buildErrorObject({ body, status, statusText }) {
 }
 
 class LdsTestWireAdapterTemplate extends TestWireAdapterTemplate {
-  static emit(value, filterFn) {
+  static emit(value: any, filterFn: any) {
     TestWireAdapterTemplate.emit({ data: value, error: undefined }, filterFn);
   }
 
-  static emitError(errorOptions, filterFn) {
+  static emitError(errorOptions: any, filterFn: any) {
     const err = buildErrorObject(errorOptions || {});
     TestWireAdapterTemplate.emit({ data: undefined, error: err }, filterFn);
   }
 
-  static error(body, status, statusText) {
+  static error(body: any, status: any, statusText: any) {
     const err = buildErrorObject({ body, status, statusText });
     TestWireAdapterTemplate.emit({ data: undefined, error: err });
   }
 
-  constructor(dataCallback) {
+  constructor(dataCallback: any) {
     super(dataCallback);
     this.emit({ data: undefined, error: undefined });
   }
 }
 
 function buildLdsTestWireAdapter() {
-  const _a = class LdsTestWireAdapter extends LdsTestWireAdapterTemplate {};
+  const _a = class LdsTestWireAdapter extends LdsTestWireAdapterTemplate {
+
+};
   _a._lastConfig = null;
   _a._wireInstances = new Set();
   return _a;
@@ -158,7 +164,7 @@ function buildLdsTestWireAdapter() {
 const knownAdapterMocks = new WeakSet();
 
 // found no other way to omit these private properties
-function createWireAdapterMock(TestWireAdapter, fn) {
+function createWireAdapterMock(TestWireAdapter: any, fn: any) {
   let testAdapter = TestWireAdapter;
   if (typeof fn === 'function') {
     Object.defineProperty(fn, 'adapter', { value: TestWireAdapter });
@@ -170,14 +176,14 @@ function createWireAdapterMock(TestWireAdapter, fn) {
   return testAdapter;
 }
 
-export function createApexTestWireAdapter(fn) {
+export function createApexTestWireAdapter(fn: any) {
   return createWireAdapterMock(buildApexTestWireAdapter(), fn);
 }
 
-export function createLdsTestWireAdapter(fn) {
+export function createLdsTestWireAdapter(fn: any) {
   return createWireAdapterMock(buildLdsTestWireAdapter(), fn);
 }
 
-export function createTestWireAdapter(fn) {
+export function createTestWireAdapter(fn: any) {
   return createWireAdapterMock(buildTestWireAdapter(), fn);
 }

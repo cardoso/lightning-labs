@@ -5,7 +5,7 @@ import { helpers } from '@lwc/wds-core/browser';
 const { hydrateElement, insertMarkupIntoDom, renderToMarkup } = helpers;
 
 chai.use((_chai, utils) => {
-  utils.addMethod(chai.Assertion.prototype, 'noLayoutShifts', async function () {
+  utils.addMethod(chai.Assertion.prototype, 'noLayoutShifts', async function (this: object) {
     const componentPath = utils.flag(this, 'object');
     const props = utils.flag(this, 'message');
 
@@ -20,10 +20,10 @@ chai.use((_chai, utils) => {
     // More details: https://web.dev/articles/optimize-cls#lab-field
     await new Promise((resolve) => setTimeout(resolve, 550));
 
-    let onCLSPromiseResolve;
-    let resolveTimeoutID;
-    const onCLSPromise = new Promise((resolve) => (onCLSPromiseResolve = resolve));
-    const layoutShiftReports = [];
+    let onCLSPromiseResolve: (arg0: any[]) => void;
+    let resolveTimeoutID: string | number | NodeJS.Timeout | undefined;
+    const onCLSPromise = new Promise<any>((resolve) => (onCLSPromiseResolve = resolve));
+    const layoutShiftReports: any[] = [];
 
     onCLS(
       (report) => {
@@ -55,8 +55,7 @@ chai.use((_chai, utils) => {
       assert.equal(
         report.value,
         0,
-        `Expected layout shift to be 0 but found it to be ${
-          report.value
+        `Expected layout shift to be 0 but found it to be ${report.value
         } more details: ${JSON.stringify(report.entries, null, 2)}`,
       );
     }

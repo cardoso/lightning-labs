@@ -14,7 +14,7 @@ export const IMPORT_META_ENV_URL = '/virtual/import-meta-env.js';
 
 export default () => ({
   name: 'env-replace',
-  transform(cxt) {
+  transform(cxt: any) {
     if (!cxt.response.is('application/javascript')) {
       return cxt.body;
     }
@@ -24,7 +24,7 @@ export default () => ({
       cxt.body,
     );
   },
-  serve(context) {
+  serve(context: any) {
     if (context.path === IMPORT_META_ENV_URL) {
       return IMPORT_META_ENV_BODY;
     }

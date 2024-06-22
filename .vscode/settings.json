@@ -3,5 +3,9 @@
      * Format a file on save.
      * Disable to prevent Stackblitz to format LWC components template files.
      */
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/dist": true
+    },
 }

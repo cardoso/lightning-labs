@@ -1,10 +1,10 @@
 import { relative as pathRelative, resolve as pathResolve } from 'node:path';
 import { stringify as qsStringify } from 'node:querystring';
-import resolveSync from 'resolve/sync.js';
+import resolve from 'resolve';
 import { toolkitSrcPath } from '../../../util.js';
 import { MOCK_CONTROLLER_PREFIX, MOCK_STUB_PREFIX } from '../const.js';
 
-const LEXER_ABS_PATH = resolveSync('es-module-lexer/dist/lexer.asm.js', {
+const LEXER_ABS_PATH = resolve.sync('es-module-lexer/dist/lexer.asm.js', {
   baseDir: toolkitSrcPath,
 });
 const BROWSER_SSR_ABS_PATH = pathResolve(toolkitSrcPath, './browser/ssr/index.js');

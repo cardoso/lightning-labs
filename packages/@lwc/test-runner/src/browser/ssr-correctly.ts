@@ -4,7 +4,7 @@ import { helpers } from '@lwc/wds-core/browser';
 const { hydrateElement, insertMarkupIntoDom, renderToMarkup } = helpers;
 
 chai.use((_chai, utils) => {
-  utils.addMethod(chai.Assertion.prototype, 'SSRCorrectly', async function () {
+  utils.addMethod(chai.Assertion.prototype, 'SSRCorrectly', async function (this: object) {
     const componentPath = utils.flag(this, 'object');
     const props = utils.flag(this, 'message');
 

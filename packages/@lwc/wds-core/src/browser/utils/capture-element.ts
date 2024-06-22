@@ -1,7 +1,12 @@
 import { executeServerCommand } from '@web/test-runner-commands';
 
 const INSIDE_TEST_RUNNER = !!new URL(window.location.href).searchParams.get('wtr-session-id');
-
+declare global {
+  interface Window {
+    __WEB_SOCKET__: WebSocket;
+  }
+  var __ELEMENTS_FOR_CAPTURE__: Map<number, any>;
+}
 let nextRequestId = 0;
 const elementsForCapture = (globalThis.__ELEMENTS_FOR_CAPTURE__ = new Map());
 const responseCallbacks = new Map();
@@ -30,7 +35,7 @@ webSocket?.addEventListener('message', async (ev) => {
   resolveCaptureRequest(image);
 });
 
-async function captureElementInPlayground(el) {
+async function captureElementInPlayground(el: any): Promise<any>{
   const requestId = nextRequestId++;
   elementsForCapture.set(requestId, el);
   webSocket.send(
@@ -39,18 +44,18 @@ async function captureElementInPlayground(el) {
       requestId,
     }),
   );
-  const imageUint8Arr = await new Promise((resolve) => responseCallbacks.set(requestId, resolve));
+  const imageUint8Arr: {image: Uint8Array} = await new Promise((resolve) => responseCallbacks.set(requestId, resolve));
   elementsForCapture.delete(requestId);
   responseCallbacks.delete(requestId);
   return imageUint8Arr;
 }
 
-async function captureElementInTest(el) {
+async function captureElementInTest(el: any): Promise<any> {
   const requestId = nextRequestId++;
   elementsForCapture.set(requestId, el);
 
   try {
-    const result = await executeServerCommand('el-snapshot', {
+    const result: {image: Uint8Array} = await executeServerCommand('el-snapshot', {
       id: String(requestId),
       tagName: el.tagName,
     });

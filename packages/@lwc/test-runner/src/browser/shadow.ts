@@ -2,7 +2,7 @@ import { assert, chai } from '@open-wc/testing';
 import { querySelectorDeep } from 'query-selector-shadow-dom';
 
 chai.use((_chai, utils) => {
-  utils.addMethod(chai.Assertion.prototype, 'haveShadowChild', function (selector) {
+  utils.addMethod(chai.Assertion.prototype, 'haveShadowChild', function (this: object, selector: string) {
     const el = utils.flag(this, 'object');
     const deepChild = querySelectorDeep(selector, el);
     assert(

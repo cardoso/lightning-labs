@@ -1,5 +1,7 @@
-import '/virtual/import-meta-env.js';
+// @ts-expect-error
 import { renderComponent } from 'lwc';
+import '/virtual/import-meta-env.js';
+
 import { determineTagName } from '../shared.js';
 
 // Because the above imports are resolved asynchronously, the worker
@@ -8,7 +10,7 @@ import { determineTagName } from '../shared.js';
 // when the worker is ready to receive messages.
 postMessage(['READY']);
 // biome-ignore lint/suspicious/noGlobalAssign: correct pattern for web worker
-onmessage = async (message) => {
+onmessage = async (message: {data: any[]}) => {
   const {
     data: [taskId, kind, ...rest],
   } = message;
@@ -25,18 +27,19 @@ onmessage = async (message) => {
   }
 
   try {
+    // @ts-expect-error
     return postMessage([taskId, true, await handler(...rest)]);
   } catch (err) {
     return postMessage([taskId, false, JSON.stringify(err, Object.getOwnPropertyNames(err))]);
   }
 };
 
-async function render(componentUrl, componentProps) {
+async function render(componentUrl: any, componentProps: any) {
   const { default: Cmp } = await import(componentUrl);
   return renderComponent(determineTagName(componentUrl), Cmp, componentProps);
 }
 
-async function mock(mockedModuleUrl, replacementUrl) {
+async function mock(mockedModuleUrl: any, replacementUrl: any) {
   const { __mock__ } = await import(mockedModuleUrl);
   if (!__mock__) {
     throw new Error(`Specified module cannot be mocked: ${mockedModuleUrl}`);
@@ -44,7 +47,7 @@ async function mock(mockedModuleUrl, replacementUrl) {
   await __mock__.useImport(replacementUrl);
 }
 
-async function resetMock(mockedModuleUrl) {
+async function resetMock(mockedModuleUrl: any) {
   const { __mock__ } = await import(mockedModuleUrl);
   if (!__mock__) {
     throw new Error(`Specified module cannot be mocked: ${mockedModuleUrl}`);

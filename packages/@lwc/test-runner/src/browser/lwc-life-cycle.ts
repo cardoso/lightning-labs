@@ -1,6 +1,6 @@
 import { assert, chai } from '@open-wc/testing';
 
-async function errorInConnectedCallbackAssertion(utils, self, message) {
+async function errorInConnectedCallbackAssertion(utils: Chai.ChaiUtils, self: object, message: string) {
   let syncError;
   let asyncError;
   const obj = utils.flag(self, 'object');
@@ -9,7 +9,7 @@ async function errorInConnectedCallbackAssertion(utils, self, message) {
     throw new Error(`Expected a function, received: ${obj}`);
   }
 
-  const listener = (errorEvent) => {
+  const listener = (errorEvent: ErrorEvent) => {
     errorEvent.preventDefault();
     asyncError = errorEvent.error.message;
   };
@@ -24,14 +24,18 @@ async function errorInConnectedCallbackAssertion(utils, self, message) {
   }
 
   const finalError = syncError || asyncError;
-  assert.equal(finalError?.message, message, `Expected to throw ${message}`);
+  if (finalError && typeof finalError === "object" && "message" in finalError) {
+    assert.equal(finalError?.message, message, `Expected to throw ${message}`);
+  } else {
+    assert.equal(finalError, message, `Expected to throw ${message}`);
+  }
 }
 
 chai.use((_chai, utils) => {
-  utils.addMethod(chai.Assertion.prototype, 'throwInConnectedCallback', function (message) {
+  utils.addMethod(chai.Assertion.prototype, 'throwInConnectedCallback', function (this: object,message: string) {
     errorInConnectedCallbackAssertion(utils, this, message);
   });
-  utils.addMethod(chai.Assertion.prototype, 'throwErrorInConnectedCallback', function (message) {
+  utils.addMethod(chai.Assertion.prototype, 'throwErrorInConnectedCallback', function (this: object, message: string) {
     errorInConnectedCallbackAssertion(utils, this, message);
   });
 });

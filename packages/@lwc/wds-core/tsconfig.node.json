@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "outDir": "dist/node",
+    "declaration": true,
+    "declarationDir": "dist/node",
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "module": "ES2022",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "noImplicitAny": false
+  },
+  "include": ["src/node/**/*"]
+}

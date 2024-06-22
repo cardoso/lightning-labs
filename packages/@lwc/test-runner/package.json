@@ -10,15 +10,17 @@
   "type": "module",
   "main": "src/utilities.js",
   "exports": {
-    ".": "./src/browser/index.js"
+    ".": "./dist/browser/index.js"
   },
   "scripts": {
+    "clean": "rm -rf dist && rm -rf node_modules",
+    "build": "rollup -c rollup.config.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
   "dependencies": {
     "@lwc/wds-core": "1.2.3",
-    "@open-wc/testing": "^3.2.0",
+    "@open-wc/testing": "^4.0.0",
     "@web/test-runner": "^0.17.1",
     "@web/test-runner-puppeteer": "^0.14.0",
     "minimist": "^1.2.8",
@@ -27,5 +29,10 @@
   },
   "bin": {
     "test-lwcs": "bin.js"
+  },
+  "devDependencies": {
+    "@types/diff": "^5.2.1",
+    "@types/minimist": "^1.2.5",
+    "@types/query-selector-shadow-dom": "^1.0.4"
   }
 }
