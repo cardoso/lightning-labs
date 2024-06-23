@@ -60,8 +60,8 @@ const genHtml = ({
 </html>
 `;
 
-export default ({ componentUrl, moduleMainUrl, shoelaceBaseUrl, componentMetadata }) => {
-  let webSocketImport = null;
+export default ({ componentUrl, moduleMainUrl, shoelaceBaseUrl, componentMetadata }: any) => {
+  let webSocketImport: any = null;
 
   return {
     name: 'index-html',

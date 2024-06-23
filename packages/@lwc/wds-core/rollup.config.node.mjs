@@ -16,6 +16,8 @@ export default {
   ],
   external: [
     '@lwc/engine-dom',
+    '@lwc/engine-server',
+    'resolve',
     '@web/test-runner-commands',
     'node:path',
     'node:querystring',

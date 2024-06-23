@@ -2,7 +2,7 @@ import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "rollup";
 import fs from "fs/promises";
 export default defineConfig([{
-  input: {"index": "src/index.ts", "node/plugins/index": "src/node/plugins/index.ts"},
+  input: {"index": "src/index.ts", "node/plugins/index": "src/node/plugins/index.ts", "node/plugins/index-html": "src/node/plugins/index-html.ts"},
   output: [
     {
       sourcemap: true,
@@ -10,7 +10,7 @@ export default defineConfig([{
       format: "es",
     },
   ],
-  external: ["@lwc/engine-dom", "@web/test-runner-commands", "node:fs/promises", "node:path", "node:url", "@lwc/metadata", "@web/dev-server", "chrome-launcher", "minimist", "puppeteer-core", "@lwc/wds-core/node", "resolve"],
+  external: ["@lwc/engine-dom", '@lwc/engine-server', "@web/test-runner-commands", "node:fs/promises", "node:path", "node:url", "@lwc/metadata", "@web/dev-server", "chrome-launcher", "minimist", "puppeteer-core", "@lwc/wds-core/node", "resolve"],
   plugins: [
     // @ts-expect-error
     typescript({

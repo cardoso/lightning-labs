@@ -22,7 +22,12 @@ export default {
       format: 'es',
     },
   ],
-  external: ['@lwc/engine-dom', '@web/test-runner-commands'],
+  external: [
+    '@lwc/engine-dom',
+    '@lwc/engine-server',
+    '/virtual/import-meta-env.js',
+    '@web/test-runner-commands',
+  ],
   plugins: [
     typescript({
       tsconfig: `./tsconfig.browser.json`,

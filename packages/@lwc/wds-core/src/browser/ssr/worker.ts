@@ -1,5 +1,5 @@
-// @ts-expect-error
-import { renderComponent } from 'lwc';
+
+import { renderComponent } from '@lwc/engine-server';
 import '/virtual/import-meta-env.js';
 
 import { determineTagName } from '../shared.js';
